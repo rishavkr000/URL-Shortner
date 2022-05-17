@@ -5,7 +5,7 @@ const validUrl = require('valid-url')
 const createUrl = async (req, res) => {
     try {
         const originalUrl = req.body;
-        if(!isValidRequestBody(longUrl)) return res.status(400).send({ status: false, message: "URL is required" })
+        if(!isValidRequestBody) return res.status(400).send({ status: false, message: "URL is required" })
 
         if(!validUrl) return res.status(400).send({status : false, msg : "Entered URL is not valid"})
     }
@@ -13,3 +13,9 @@ const createUrl = async (req, res) => {
         res.status(500).send( { status : false, msg : error.message } )
     }
 }
+
+
+
+
+
+module.exports.createUrl = createUrl
