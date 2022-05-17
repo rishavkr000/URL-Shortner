@@ -5,19 +5,18 @@ let isValidRequestBody = function (body) {
     return true;
 }
 
-let isEmpty = function (value) {
-    if (typeof value === 'undefined' || value === null) return true;
-    if (typeof value === 'string' && value.trim().length === 0) return true;
-    return false;
+let isValid = function (value) {
+    if (typeof value === 'undefined' || value === null) return false;
+    if (typeof value === 'string' && value.trim().length === 0) return false;
+    return true;
 }
 
-let isValidUrl = function (url) {
-    let urlRegex = /(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g;
-    return urlRegex.test(url);
-}
+// let isValidUrl = function (url) {
+//     let urlRegex = /(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g;
+//     return urlRegex.test(url);
+// }
 
 module.exports = {
     isValidRequestBody,
-    isEmpty,
-    isValidUrl
+    isValid
 }

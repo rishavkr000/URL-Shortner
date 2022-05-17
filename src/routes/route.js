@@ -1,12 +1,13 @@
 const express = require('express');
 let router = express.Router();
+const urlCotroller = require("../controllers/urlController")
 
 
 router.post("/", (req, res) => {
     res.send('ok')
 })
 
-
+router.post("/url/shorten", urlCotroller.createUrl )
 
 
 module.exports = router;
