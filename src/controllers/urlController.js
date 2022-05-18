@@ -1,4 +1,4 @@
-const urlModel = require("../modules/urlModel")
+const urlModel = require("../models/urlModel")
 const { isValidRequestBody, isValid } = require("../utility/validation")
 const validUrl = require('valid-url')
 const shortid = require('shortid')
