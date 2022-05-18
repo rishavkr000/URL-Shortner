@@ -1,4 +1,4 @@
-const urlModel = require("../modules/urlModel");
+const urlModel = require("../models/urlModel");
 const redis = require("redis");
 
 const {
