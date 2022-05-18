@@ -20,11 +20,12 @@ const createUrl = async (req, res) => {
         if(!validUrl.isUri(longUrl)){
             return res.status(400).send({status:false,message:"Enter a valid url"})
         }
-        let url = await urlModel.findOne({longUrl:longUrl})
+        let url = await urlModel.findOne({longUrl:longUrl}).select({ __v: 0, _id: 0, createdAt: 0, updatedAt: 0 })
 
-        if(url){
-            return res.status(400).send({status:false,message:"Url already registered"})
+        if(url) {
+            res.status(200).send({ status : true, data : url})
         }
+
         const baseUrl='http://localhost:3000'
         if(!validUrl.isUri(baseUrl)){
             return res.status(400).send({status:false,message:"base url is not valid"})
@@ -50,7 +51,8 @@ const createUrl = async (req, res) => {
         }
 
         let data = await urlModel.create(result)
-        return res.status(201).send({status:true,message:"created Successfully",data:data})
+
+        return res.status(201).send({status:true,message:"created Successfully",data:result})
 
     }
     catch (error) {
@@ -67,17 +69,17 @@ const getUrl = async (req, res) => {
         const urlCode = req.params.urlCode
 
         const data = await urlModel.findOne({ urlCode : urlCode })
+        let url = data.longUrl
         if(!data) {
              return res.status(404).send({status : false, msg: "URL not found"})
         }   
-        return res.status(302).redirect(data.longUrl)
+        res.status(302).redirect(url)
+        // return res.redirect(url)
     }
     catch (error) {
         res.status(500).send( { status : false, msg : error.message } )
     }
 }
-
-
 
 
 
