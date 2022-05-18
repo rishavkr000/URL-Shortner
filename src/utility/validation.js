@@ -11,11 +11,6 @@ let isValid = function (value) {
     return true;
 }
 
-// let isValidUrl = function (url) {
-//     let urlRegex = /(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g;
-//     return urlRegex.test(url);
-// }
-
 module.exports = {
     isValidRequestBody,
     isValid
