@@ -23,7 +23,7 @@ const createUrl = async (req, res) => {
         let url = await urlModel.findOne({longUrl:longUrl}).select({ __v: 0, _id: 0, createdAt: 0, updatedAt: 0 })
 
         if(url) {
-            res.status(200).send({ status : true, data : url})
+            return res.status(200).send({ status : true, data : url})
         }
 
         const baseUrl='http://localhost:3000'
@@ -41,7 +41,7 @@ const createUrl = async (req, res) => {
 
         const checkShortUrl = await urlModel.findOne({ shortUrl : shortUrl })
         if(checkShortUrl){
-            return res.status(400).send({status:false,message:"Short Url is already registered"})
+            return res.status(400).send({status:false, message:"Short Url is already registered"})
         }
 
         let result = {
@@ -52,7 +52,7 @@ const createUrl = async (req, res) => {
 
         let data = await urlModel.create(result)
 
-        return res.status(201).send({status:true,message:"created Successfully",data:result})
+        return res.status(201).send({status:true, message:"created Successfully", data:result})
 
     }
     catch (error) {
