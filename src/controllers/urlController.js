@@ -60,6 +60,7 @@ const createUrl = async (req, res) => {
 
 
 // GET /:urlCode
+//This is 2nd API
 
 const getUrl = async (req, res) => {
     try {
