@@ -1,7 +1,7 @@
 const express = require('express');
 let router = express.Router();
 const urlController = require("../controllers/urlController")
-const auth = require("../cache/auth")
+
 
 
 router.post("/", (req, res) => {
@@ -9,9 +9,9 @@ router.post("/", (req, res) => {
 })
 
 router.post("/url/shorten", urlController.createUrl )
-// router.get('/:urlCode', urlController.getUrl);
+router.get('/:urlCode', urlController.fetchUrl);
 
-router.get('/:urlCode', auth.fetchUrl);
+
 
 
 module.exports = router;
