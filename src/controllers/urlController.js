@@ -73,7 +73,7 @@ const createUrl = async (req, res) => {
 
         let dbUrl = await urlModel.findOne({longUrl: longUrl}).select({ __v: 0, _id: 0, createdAt: 0, updatedAt: 0 })
 
-        if(dbUrl) return res.status(200).send({ status: true, data: dbUrl })
+        if(dbUrl) return res.status(201).send({ status: true, data: dbUrl })
 
         let data = await urlModel.create(result)
         if (data) {
