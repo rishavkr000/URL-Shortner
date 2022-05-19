@@ -1,4 +1,3 @@
-const mongoose = require("mongoose")
 
 let isValidRequestBody = function (body) {
     if (Object.keys(body).length === 0) return false;
