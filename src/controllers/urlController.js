@@ -52,7 +52,7 @@ const createUrl = async (req, res) => {
 
         let data = await urlModel.create(result)
 
-        return res.status(201).send({status:true, message:"created Successfully", data:result})
+        return res.status(201).send({status:true, message:"created Successfully", data : data})
 
     }
     catch (error) {
@@ -69,10 +69,12 @@ const getUrl = async (req, res) => {
         const urlCode = req.params.urlCode
 
         const data = await urlModel.findOne({ urlCode : urlCode })
-        let url = data.longUrl
         if(!data) {
              return res.status(404).send({status : false, msg: "URL not found"})
         }   
+
+        let url = data.longUrl
+
         res.status(302).redirect(url)
         // return res.redirect(url)
     }
