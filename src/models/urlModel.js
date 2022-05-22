@@ -1,5 +1,7 @@
 const mongoose = require("mongoose");
 
+
+// instantiate a mongoose schema 
 const urlSchema = new mongoose.Schema({
     urlCode : {
         type : String,
@@ -23,5 +25,6 @@ const urlSchema = new mongoose.Schema({
     timestamps: true
 })
 
+// create a model for schema and export it
 module.exports = mongoose.model('Url', urlSchema)
 
