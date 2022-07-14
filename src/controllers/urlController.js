@@ -1,5 +1,5 @@
 const urlModel = require("../models/urlModel")
-const validUrl = require('valid-url')
+// const validUrl = require('valid-url')
 const shortid = require('shortid')
 const redis = require("redis");
 const {promisify} = require("util");
@@ -56,8 +56,6 @@ const createUrl = async (req, res) => {
             return res.status(400).send({status: false, message: "Enter a valid url"})
         }
 
-        
-
         const urlCode = shortid.generate().toLowerCase()
         const shortUrl = 'http://localhost:3000/' + urlCode
 
@@ -100,18 +98,26 @@ const createUrl = async (req, res) => {
 }
 
 const fetchUrl = async function (req, res) {
-    let url = await GET_ASYNC(`${req.params.urlCode}`)
-    if (!url) {
-        let check = await urlModel.findOne({urlCode: req.params.urlCode});
-        if (!check) return res.status(404).send({status: false, msg: "Url not found"})
-        await SET_ASYNC(`${req.params.urlCode}`, check.longUrl)
-        console.log("I am inside db call")
-        return res.redirect(check.longUrl)
+    try {
+        
+        let url = await GET_ASYNC(`${req.params.urlCode}`)
+        if (!url) {
+            let check = await urlModel.findOne({urlCode: req.params.urlCode});
+            if (!check) return res.status(404).send({status: false, msg: "Url not found"})
+            await SET_ASYNC(`${req.params.urlCode}`, check.longUrl)
+            console.log("I am inside db call")
+            return res.redirect(check.longUrl)
+        }
+        console.log("I am from redis")
+
+        return res.redirect(url)
     }
-    console.log("I am from redis")
-
-    return res.redirect(url)
-
+    catch (error) {
+        res.status(500).send({
+            status: false,
+            msg: error.message
+        })
+    }
 };
 
 module.exports.createUrl = createUrl
