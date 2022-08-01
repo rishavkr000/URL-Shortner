@@ -1,43 +1,8 @@
 const urlModel = require("../models/urlModel")
-// const validUrl = require('valid-url')
+const { isUrlValid, isValidRequestBody } = require('../utility/validation')
+const { SET_ASYNC, GET_ASYNC } = require('../utility/redisConfig')
 const shortid = require('shortid')
-const redis = require("redis");
-const {promisify} = require("util");
 
-//Connect to redis
-const redisClient = redis.createClient(
-    10321,
-    "redis-10321.c301.ap-south-1-1.ec2.cloud.redislabs.com", {
-        no_ready_check: true
-    }
-);
-redisClient.auth("Lft6ocsuciDUvWys2q8QLmajJxhwrMgM", function (err) {
-    if (err) throw err;
-});
-
-redisClient.on("connect", async function () {
-    console.log("Connected to Redis..");
-});
-
-
-
-//1. connect to the server
-//2. use the commands :
-
-//Connection setup for redis
-
-const SET_ASYNC = promisify(redisClient.SET).bind(redisClient);
-const GET_ASYNC = promisify(redisClient.GET).bind(redisClient);
-
-let isValidRequestBody = function (body) {
-    if (Object.keys(body).length === 0) return false;
-    return true;
-}
-
-let isUrlValid = function (longUrl) {
-    let urlRegex = (/^(ftp|http|https):\/\/[^ "]+$/)
-    return urlRegex.test(longUrl)
-}
 
 const createUrl = async (req, res) => {
     try {
@@ -48,16 +13,12 @@ const createUrl = async (req, res) => {
 
         const { longUrl } = body;
 
-        // if (!validUrl.isUri(longUrl)) {
-        //     return res.status(400).send({status: false, message: "Enter a valid url"})
-        // }
-
         if (!isUrlValid(longUrl)) {
             return res.status(400).send({status: false, message: "Enter a valid url"})
         }
 
         const urlCode = shortid.generate().toLowerCase()
-        const shortUrl = 'http://localhost:3000/' + urlCode
+        const shortUrl = 'http://localhost:4000/' + urlCode
 
         let result = {
             urlCode: urlCode,
@@ -99,18 +60,16 @@ const createUrl = async (req, res) => {
 
 const fetchUrl = async function (req, res) {
     try {
-        
+        let urlCode = req.params.urlCode
         let url = await GET_ASYNC(`${req.params.urlCode}`)
         if (!url) {
-            let check = await urlModel.findOne({urlCode: req.params.urlCode});
-            if (!check) return res.status(404).send({status: false, msg: "Url not found"})
+            let check = await urlModel.findOne({urlCode: urlCode});
+            if (!check) return res.status(404).send({status: false, msg: `Url not found with this code ${urlCode}` })
             await SET_ASYNC(`${req.params.urlCode}`, check.longUrl)
-            console.log("I am inside db call")
-            return res.redirect(check.longUrl)
+            return res.redirect(301, check.longUrl)
+        }else{
+            return res.redirect(301, url)
         }
-        console.log("I am from redis")
-
-        return res.redirect(url)
     }
     catch (error) {
         res.status(500).send({
@@ -122,4 +81,3 @@ const fetchUrl = async function (req, res) {
 
 module.exports.createUrl = createUrl
 module.exports.fetchUrl = fetchUrl;
-
