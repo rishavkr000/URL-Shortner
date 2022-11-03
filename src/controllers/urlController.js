@@ -2,7 +2,6 @@ const urlModel = require("../models/urlModel")
 const { isUrlValid, isValidRequestBody } = require('../utility/validation')
 const { SET_ASYNC, GET_ASYNC } = require('../utility/redisConfig')
 const shortid = require('shortid')
-hsdufhsdlkjhfcnkdlsjfs
 
 
 const createUrl = async (req, res) => {
