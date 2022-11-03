@@ -3,7 +3,7 @@ const { isUrlValid, isValidRequestBody } = require('../utility/validation')
 const { SET_ASYNC, GET_ASYNC } = require('../utility/redisConfig')
 const shortid = require('shortid')
 
-ytutyijyujiktyjy
+
 const createUrl = async (req, res) => {
     try {
         let body = req.body
