@@ -1,4 +1,4 @@
-# URL-Shortner-Project-4
+# URL-Shortner
 
 Uranium
 Scalable URL Shortner Project Requirement
